@@ -1,0 +1,7 @@
+Package: obs-setup
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Your Name <you@example.com>
+Description: Custom installer/uninstaller/reinstaller for OBS Studio with GPU & virtual camera support.

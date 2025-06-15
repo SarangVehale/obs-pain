@@ -1,0 +1,16 @@
+pkgname=obs-setup
+pkgver=1.0
+pkgrel=1
+pkgdesc="Custom installer/uninstaller/reinstaller for OBS Studio with GPU & virtual camera support"
+arch=('any')
+url="https://github.com"
+license=('MIT')
+depends=('bash' 'dialog')
+source=()
+package() {
+    install -Dm755 install_obs.sh "$pkgdir/usr/local/bin/install_obs.sh"
+    install -Dm755 uninstall_obs.sh "$pkgdir/usr/local/bin/uninstall_obs.sh"
+    install -Dm755 reinstall_obs.sh "$pkgdir/usr/local/bin/reinstall_obs.sh"
+    install -Dm755 obs-setup.sh "$pkgdir/usr/local/bin/obs-setup.sh"
+    install -Dm644 obs-setup.desktop "$pkgdir/usr/share/applications/obs-setup.desktop"
+}

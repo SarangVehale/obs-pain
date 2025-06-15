@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=OBS Studio Setup
+Comment=Install, uninstall, or reinstall OBS Studio with GPU & virtual camera support
+Exec=/usr/local/bin/reinstall_obs.sh
+Icon=obs
+Terminal=true
+Type=Application
+Categories=Utility;AudioVideo;
+StartupNotify=true
+
