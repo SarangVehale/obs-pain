@@ -1,114 +1,168 @@
-# OBS Setup Scripts
+# OBS Easy Installer Project
 
-A set of cross-distro Bash scripts to **install**, **uninstall**, and **reinstall** OBS Studio along with its dependencies and virtual camera support, with GPU detection and intelligent package management.
+> **Effortless installation, management, and packaging of OBS Studio on Linux**
+
+---
+
+## Overview
+
+This project provides a **fully automated, interactive, and user-friendly solution** for installing, uninstalling, reinstalling, and packaging OBS Studio on major Linux distributions. It includes:
+
+* Individual install/uninstall/reinstall scripts for OBS with dependency checks
+* A packaging script to generate `.deb`, `.tar.gz`, and Arch Linux packages
+* A robust **TUI (Text User Interface) launcher script** — `autoinstaller.sh` — that ties everything together
+* Hash verification of scripts for security and integrity
+* Auto-update mechanism to fetch latest scripts from a remote repo
+* Desktop launcher installer for easy GUI access
+* Full logging of user actions and installation outputs
 
 ---
 
 ## Features
 
-* Supports major Linux distributions:
-
-  * Debian / Ubuntu (APT)
-  * Fedora (DNF)
-  * Arch Linux (Pacman)
-  * OpenSUSE (Zypper)
-* Detects GPU vendor (NVIDIA, AMD, Intel) and prints driver recommendations
-* Installs only missing packages to save time and bandwidth
-* Backs up and optionally restores OBS configuration on reinstall
-* Includes virtual camera modules (`v4l2loopback`)
-* Provides clear console output and status messages
+* **Cross-distro compatibility:** Supports Ubuntu/Debian, Fedora, Arch, and more
+* **Auto dependency checks** and GPU detection for optimized OBS setup
+* **Package creation** for distribution or personal use
+* **Centralized TUI menu** for ease of use — no need to remember commands or script names
+* **Auto chmod +x and auto-update** for all essential scripts
+* **Hash verification** to ensure scripts haven’t been tampered with
+* **Desktop launcher** integration for native app menu access
+* **Comprehensive logs** stored in `~/obs_autoinstaller.log`
 
 ---
 
-## Files
+## Components
 
-| Script              | Description                                                                 |
-| ------------------- | --------------------------------------------------------------------------- |
-| `install_obs.sh`    | Installs OBS Studio and dependencies                                        |
-| `uninstall_obs.sh`  | Removes OBS Studio and related packages                                     |
-| `reinstall_obs.sh`  | Uninstalls and reinstalls OBS Studio with config backup and restore options |
-| `obs-setup.desktop` | Desktop entry file for easy GUI launcher integration (optional)             |
+| File                | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `install_obs.sh`    | Installs OBS Studio and dependencies                         |
+| `uninstall_obs.sh`  | Removes OBS Studio and cleans dependencies                   |
+| `reinstall_obs.sh`  | Backs up config and reinstalls OBS                           |
+| `package_all.sh`    | Creates `.deb`, `.tar.gz`, and Arch Linux packages           |
+| `obs-setup.sh`      | Verifies hashes of scripts for integrity                     |
+| `obs-setup.desktop` | Desktop entry for launching OBS setup GUI                    |
+| `autoinstaller.sh`  | Central TUI launcher script that orchestrates all operations |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+* A major Linux distro (Ubuntu, Debian, Fedora, Arch, etc.)
+* `curl` or `wget` installed for script auto-update
+* Internet connection to download dependencies and scripts
+
+### Installation
+
+1. Clone or download this repo or the scripts into a single folder
+
+2. Make `autoinstaller.sh` executable:
+
+   ```bash
+   chmod +x autoinstaller.sh
+   ```
+
+3. Run the autoinstaller:
+
+   ```bash
+   ./autoinstaller.sh
+   ```
+
+4. Use the interactive menu to install, uninstall, reinstall, package, or install the desktop launcher
 
 ---
 
 ## Usage
 
-1. **Make scripts executable:**
+Upon running `autoinstaller.sh`, you get a clean TUI menu:
 
-   ```bash
-   chmod +x install_obs.sh uninstall_obs.sh reinstall_obs.sh
-   ```
+```
+================== OBS AutoInstaller Menu ====================
+Please select an option:
+  1) Install OBS Studio
+  2) Uninstall OBS Studio
+  3) Reinstall OBS Studio (with backup)
+  4) Package all (build .deb, tar.gz, etc.)
+  5) Install desktop launcher
+  6) Exit
+==============================================================
+```
 
-2. **Run the installer:**
-
-   ```bash
-   ./install_obs.sh
-   ```
-
-3. **Uninstall OBS:**
-
-   ```bash
-   ./uninstall_obs.sh
-   ```
-
-4. **Reinstall OBS (backs up config and prompts to restore):**
-
-   ```bash
-   ./reinstall_obs.sh
-   ```
+* **Install** will setup OBS Studio with dependencies for your detected distro
+* **Uninstall** will cleanly remove OBS and dependencies
+* **Reinstall** backs up configs and reinstalls OBS
+* **Package all** builds installable packages for easy distribution
+* **Install desktop launcher** adds an app menu shortcut for the OBS setup GUI
+* **Exit** closes the program
 
 ---
 
-## Packaging
+## Auto-Update & Verification
 
-These scripts can be bundled into `.deb`, `.tar.gz`, and `.pkg.tar.zst` packages for easy distribution and installation. See the packaging scripts for details.
+* Before each action, the autoinstaller checks for updated versions of all scripts from the remote repo URL (configurable in `autoinstaller.sh`)
+* It downloads and replaces outdated scripts, ensuring you always run the latest code
+* Scripts are verified via `obs-setup.sh` for hash integrity before execution
+* All outputs and actions are logged in `~/obs_autoinstaller.log` for easy troubleshooting
 
 ---
 
-## Contributing
+## Developer Guide
 
-Contributions, suggestions, and bug reports are welcome! Here's how you can help:
+### Adding/Updating Scripts
 
-### How to Contribute
+1. Add your new or updated scripts to your remote repo
+2. Update `REPO_BASE_URL` in `autoinstaller.sh` to point to your repo's raw files
+3. The autoinstaller will auto-download new scripts on next run
 
-1. **Fork the repository** and clone it locally.
+### Packaging
 
-2. **Create a new branch** for your feature or fix:
+* Modify `package_all.sh` to customize package contents or formats
+* Use Debian control files, Arch PKGBUILD, or tarball structures as needed
+* The autoinstaller TUI lets users build packages without manual commands
 
-   ```bash
-   git checkout -b feature/my-feature
-   ```
+### Desktop Entry
 
-3. **Make your changes**, ensuring the scripts remain compatible across supported distros.
+* Update `obs-setup.desktop` to customize icon, name, or exec path
+* Desktop launcher installs to `~/.local/share/applications` for per-user access
 
-4. **Test your changes** thoroughly on supported distros if possible.
+---
 
-5. **Submit a pull request** with a clear description of your changes.
+## Logging
 
-### Coding Style & Guidelines
+* All actions and output are appended to `~/obs_autoinstaller.log`
+* Check this file if any issues arise during installation or packaging
 
-* Use `bash` syntax and best practices.
-* Scripts should handle errors gracefully.
-* Provide clear user-friendly output.
-* Maintain idempotency (running scripts multiple times should not break anything).
-* Document any new dependencies or required steps.
+---
 
-### Reporting Issues
+## Contribution
 
-* Use GitHub Issues to report bugs or request features.
-* Provide distro info, script version, and detailed steps to reproduce.
+We welcome contributions! Here’s how you can help:
+
+* Fork the repo and submit pull requests
+* Improve or add support for more distros
+* Enhance the TUI or build a GUI wrapper
+* Add tests for script verification and package creation
+* Report bugs or request features via issues
 
 ---
 
 ## License
 
-MIT License — see `LICENSE` file for details.
+This project is licensed under the MIT License — see the LICENSE file for details.
 
 ---
 
-## Acknowledgements
+## Contact
 
-Thanks to the open-source community and OBS Studio team for providing great software and tools!
+For questions or support, reach out via GitHub issues or:
+
+* Your Name / Maintainer
+* Email: [sarangvehale2@gmail.com](mailto:sarangvehale2@gmail.com)
+* GitHub: [https://github.com/SarangVehale/obs-pain.git](https://github.com/SarangVehale/obs-pain.git)
 
 ---
 
+### Thank you for making OBS setup on Linux effortless!
+
+---
